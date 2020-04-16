@@ -22,14 +22,14 @@ set DD=%date:~7,2%
     set /a "numberOfDays=%~2"
 	title "Setting computer for Users New"
 	color a
-	:: Thêm tên người dùng
-	set /p UserName=Ten nguoi dung: 
-	:: Thêm bộ phận người dùng
-	set /p UserName1=Bo phan: 
-	:: Thêm ngày disable-admin
-    set /p "numberOfDays=So ngay "disable-admin": "
+	:: Add User
+	set /p UserName=User Name: 
+	:: Enter division a staff 
+	set /p Division=Division: 
+	:: Expiry using Admin
+    set /p "numberOfDays=Countdown days "disable-admin": "
 	::
-	:: Mở bảng disk management
+	:: Open disk management
 	Start /wait "diskmanagement" diskmgmt.msc
     ::
 	set "currentDate="
@@ -43,16 +43,17 @@ set DD=%date:~7,2%
 		set "d=%%c"
     )
 	:: Lấy tên máy và gán vào biến
+	:: Get ComputerName & create variable
 	WMIC computersystem get name /value > "ComputerName"
-	:: Đổi tên máy
+	:: Change Computer Name
 	WMIC COMPUTERSYSTEM WHERE caption='%ComputerName%' rename "%UserName%-%UserName1%"
-	:: Tạo người dùng
+	:: Create new Username 
 	NET Users "%UserName%" "%PWU%" /add /logonpasswordchg:yes
-	:: Bỏ logonpasswordchg & Enable active admin
+	:: disable logonpasswordchg & Enable active admin in compmgmt.msc
 	WMIC USERACCOUNT WHERE NAME="admin" SET PASSWORDEXPIRES=false,DISABLED=false
-	:: Gia han disable-admin
+	:: Term Admin
 	schtasks /CHANGE /TN "disable-admin" /RU "administrator" /RP %PW% /SD %M%/%D%/%Y% /ENABLE /IT
-	:: Tự khởi động lại
+	:: Reboot
 	shutdown /r /t 0
 	goto :eof
 	endlocal
@@ -189,9 +190,11 @@ set DD=%date:~7,2%
 :StartNow
 	setlocal
 :: Mật khẩu Administrator để chạy schtasks gia hạn admin [Run whether user is logged on or not]
+:: Enter Password Administrator, Run schtask disable-admin [Run whether user is logged on or not]
 set PW=
 
 :: Mật khẩu mặc định Users
+:: Password Users
 set PWU=Mothaiba
 
 :: Gia hạn disable-admin
