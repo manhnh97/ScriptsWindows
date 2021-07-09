@@ -1,9 +1,9 @@
 echo off
 
 :: Commands
-REM Images Name ; Image.jpg
-Set "IMG=boy_night_headphones_145031_1920x1080.jpg"
-REM Location Folder Picture
+REM Images Name ; Image_Test.jpg
+Set "IMG=ang3o4ai16r41.jpg"
+REM Location Folder Pictures
 Set "hrefImage=http://172.18.18.24/software/Windows/Wallpaper/"
 
 REM Directory Store Images
@@ -20,4 +20,4 @@ curl -O %hrefImage%%IMG%
 reg add "%RegDesktop%" /v Wallpaper /t REG_SZ /d %PathImages%%IMG% /f
 reg add "%RegDesktop%" /v WallpaperTileWallPaper /t REG_SZ /d 0 /f
 reg add "%RegDesktop%" /v WallpaperStyle /t REG_SZ /d 1 /f
-RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
+RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters 1, True
