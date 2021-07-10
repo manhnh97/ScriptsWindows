@@ -1,8 +1,6 @@
 :: [Important] Active with Highest Privileges
 
 ::  It is recommended to test the script on a local machine for its purpose and effects. 
-::  ManageEngine Desktop Central will not be responsible for any 
-::  damage/loss to the data/setup based on the behavior of the script.
 
 ::  Description - Script to Disable IPv6
 ::  Parameters -  By dafault it will disable all IPv6 components. If you want to disable particular compnent, use one of the parameter mentioned below

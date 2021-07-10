@@ -1,9 +1,3 @@
-:: [NOTES]
-::      - Remove All Users in Localgroup Administrators
-::      - Schedule Remove after 1 month per times
-::      - Need Run As Highest Privileges
-
-:: ==================================
 set HOST=%COMPUTERNAME%
 set "FolderStoreM=%PUBLIC%\Documents\Mazekaz"
 REM Password of Administrator or Users have to Highest Privileges
