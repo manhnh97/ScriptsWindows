@@ -7,6 +7,4 @@
 ::  Configuration Type - COMPUTER
 ::  ===========================================================================================================================
 
-reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" /v "SMB1" /t REG_DWORD /d 1 /f
-sc.exe config lanmanworkstation depend= bowser/mrxsmb10/mrxsmb20/nsi 
-sc.exe config mrxsmb10 start= auto
+DISM /Online /Enable-Feature /All /FeatureName:SMB1Protocol /norestart
