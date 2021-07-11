@@ -11,30 +11,30 @@ For Each objOperatingSystem in colOperatingSystems
 Osname = objOperatingSystem.Caption
 Next
 If InStr(Osname, "Windows XP") <> 0 Then
-  profpath = "\Local Settings\Temp"
-  recyclerpath = "\recycler\"
-  cookiespath = "%USERPROFILE%\Cookies"
+	profpath = "\Local Settings\Temp"
+	recyclerpath = "\recycler\"
+	cookiespath = "%USERPROFILE%\Cookies"
 else
-  profpath = "\AppData\Local\Temp"
-  recyclerPath = "\$recycle.bin\"
-  cookiespath = "%APPDATA%\Microsoft\Windows\Cookies"
+	profpath = "\AppData\Local\Temp"
+	recyclerPath = "\$recycle.bin\"
+	cookiespath = "%APPDATA%\Microsoft\Windows\Cookies"
 End if
 
- 'For cleaning Appdata for every user profile
+'For cleaning Appdata for every user profile
 Set objRegistry=GetObject("winmgmts:\\" & _ 
     strComputer & "\root\default:StdRegProv")
- 
+
 strKeyPath = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList"
 objRegistry.EnumKey HKEY_LOCAL_MACHINE, strKeyPath, arrSubkeys
- 
+
 For Each objSubkey In arrSubkeys
     strValueName = "ProfileImagePath"
     strSubPath = strKeyPath & "\" & objSubkey
     objRegistry.GetExpandedStringValue HKEY_LOCAL_MACHINE,strSubPath,strValueName,strValue
 	set fld = fso.GetFolder(strValue)
 	if fso.FolderExists( strValue & profpath) then
-         set objTempFolder = fso.GetFolder(strValue & profpath)
-		 If InStr(objTempFolder.Path, "systemprofile") = 0 And InStr(objTempFolder.Path, "LocalService") = 0 And InStr(objTempFolder.Path, "NetworkService") = 0 Then
+        set objTempFolder = fso.GetFolder(strValue & profpath)
+		If InStr(objTempFolder.Path, "systemprofile") = 0 And InStr(objTempFolder.Path, "LocalService") = 0 And InStr(objTempFolder.Path, "NetworkService") = 0 Then
 			For Each oFile In objTempFolder.files
 				fso.DeleteFile oFile
 			Next
