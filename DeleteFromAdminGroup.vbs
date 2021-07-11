@@ -1,3 +1,6 @@
+' Run as Highest Privileges <> Configurate Type - COMPUTER
+' Delete All Users Except Administrator & Admin
+
 On Error Resume Next
 strComputer = "."
 strLocalAdminGroup = "Administrators"  
