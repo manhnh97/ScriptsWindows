@@ -65,6 +65,8 @@ goto :eof
             WMIC COMPUTERSYSTEM WHERE caption='%ComputerName%' rename "%UserName%-%Department%"
             REM Create a New User and Password
             NET Users "%UserName%" "%PWU%" /add /logonpasswordchg:yes
+            REM Add User to Localgroup "Remote Desktop Users"
+            NET Localgroup "Remote Desktop Users" "%UserName%" /add
             REM Set Asset Code to Computer Description
             net config server /srvcomment:"CA %AssetCode%"
             REM Schedule Calendar Countdown DateTime Disable Admin User
