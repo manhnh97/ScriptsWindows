@@ -1,7 +1,32 @@
+    REM =======================================
+    REM TITLE: 
+        :: Setup computer for new staff
+    REM =======================================
+    REM DESCRIPTION:
+        :: Script can make:
+            :: Create an user
+            :: Add user to localgroup "Remote Desktop Users"
+            :: Add asset code to description computer
+            :: Schedule Expire User Admin to use localgroup Administrators
+            :: Schedule turn off website default of company
+                :: Website setting in Regedit [HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run]
+            :: Start Disk Management to Extend Disk
+        :: And... When complete will restart after 3 seconds
+    REM =======================================
+    REM HOW TO USE IT:
+        :: Input 4 variable:
+            :: UserName
+            :: Department
+            :: AssetCode 
+            :: NumberOfDay
+        :: Example
+            :: ManhNH   <> [Manh Nguyen Huu]
+            :: IT       <> [Information Technology] 
+            :: CA 218   <> [Computer Asset 218]
+            :: 9        <> [numberofDay]
+
+    ::
 @echo off
-    REM Configure computer new for new member Change Computer Name, Create User, Schedule disable-admin)
-    
-    REM Need add password variable for Administrator in bottom 
 
 if _%1_==_payload_  goto :payload
 
@@ -75,7 +100,7 @@ goto :eof
             :: schtasks /CREATE /TN "RikkeiWebOneWeek" /RU "administrator" /RP %PW% /TR "REG DELETE HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v RikkeiWebOneWeek /f" /SC ONCE /ST 09:00 /SD %M%/%D%/%Y% /RL HIGHEST /f
             schtasks /CHANGE /TN "RikkeiNewComers" /RU "administrator" /RP %PW% /SD %M%/%D%/%Y% /ENABLE /IT
             
-            REM Mở bảng disk management
+            REM Open disk management
             Start /wait "Disk Management" diskmgmt.msc
             
             REM Restart after 3 second
