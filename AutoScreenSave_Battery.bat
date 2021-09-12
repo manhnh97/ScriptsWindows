@@ -1,6 +1,7 @@
 :: Run as Users Privileges <> Configuration Type - USER
-:: Screen Save Lock Save Battery and Secure PCs
+:: Turn On Screen Save Lock Save Battery and Secure PCs
 :: Default Screen Save after 5 minute and Black Screen
+::      Activate timeout after restart
 
 REG ADD "HKEY_CURRENT_USER\Control Panel\Desktop" /v SCRNSAVE.EXE /t REG_SZ /d "%SystemRoot%\System32\scrnsave.scr" /f
 REG ADD "HKEY_CURRENT_USER\Control Panel\Desktop" /v ScreenSaveTimeOut /t REG_SZ /d 300 /f

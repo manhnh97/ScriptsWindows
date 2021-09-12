@@ -1,32 +1,32 @@
+@echo off
     REM =======================================
     REM TITLE: 
-        :: Setup computer for new staff
+        REM Setup computer for new staff
     REM =======================================
     REM DESCRIPTION:
-        :: Script can make:
-            :: Create an user
-            :: Add user to localgroup "Remote Desktop Users"
-            :: Add asset code to description computer
-            :: Schedule Expire User Admin to use localgroup Administrators
-            :: Schedule turn off website default of company
-                :: Website setting in Regedit [HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run]
-            :: Start Disk Management to Extend Disk
-        :: And... When complete will restart after 3 seconds
+        REM Script can make:
+            REM Create an user
+            REM Add user to localgroup "Remote Desktop Users"
+            REM Add asset code to description computer
+            REM Schedule Expire User Admin to use localgroup Administrators
+            REM Schedule turn off website default of company
+                REM Website setting in Regedit [HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run]
+            REM Start Disk Management to Extend Disk
+        REM And... When complete will restart after 3 seconds
     REM =======================================
     REM HOW TO USE IT:
-        :: Input 4 variable:
-            :: UserName
-            :: Department
-            :: AssetCode 
-            :: NumberOfDay
-        :: Example
-            :: ManhNH   <> [Manh Nguyen Huu]
-            :: IT       <> [Information Technology] 
-            :: CA 218   <> [Computer Asset 218]
-            :: 9        <> [numberofDay]
+        REM Input 4 variable:
+            REM UserName
+            REM Department
+            REM AssetCode 
+            REM NumberOfDay
+        REM Example
+            REM ManhNH   <> [Manh Nguyen Huu]
+            REM IT       <> [Information Technology] 
+            REM CA 218   <> [Computer Asset 218]
+            REM 9        <> [numberofDay]
 
     ::
-@echo off
 
 if _%1_==_payload_  goto :payload
 
