@@ -6,9 +6,9 @@ REM =============== Description ===============
 
 REM =============== Can do it =============== 
     REM + Set User Account Administrator gồm Password, Password Unlimited Date Time
-    REM + Set User Account Admin gồm Password (Default Password: 12345678a@), add User Account Admin to Localgroup Administrators
+    REM + Set User Account Admin gồm Password (Default Password: Input password in Variable => PW_Admin), add User Account Admin to Localgroup Administrators
     REM + Schedule Disable Admin middle for employee
-    REM + Open Website https://newcomers.rikkei.vn/ on Logon
+    REM + Open Website * on Logon
     REM + Date and Time Synchronization (UTC+07:00)
     REM + Lock Screen after 5 minutes
     REM + Disabling IPv6 Using Command Prompt
@@ -84,7 +84,12 @@ endlocal & set "%~1=%_password%" & exit /b %exitCode%
 rem =============== Set Password Default ===============  
 :SetPassword
     setlocal
-    set "PW_Admin=12345678a@"
+    REM =============== Input Password to Variable here ===============
+    set "PW_Admin="
+    REM =============== Variable here ===============
+
+    REM Set link go to Website 
+    set "ChromeWebsite="
     call :CUSTOMIZE_USERS
     call :GPO_AllinOne
 
@@ -102,17 +107,21 @@ rem =============== Set Password Default ===============
         NET USER Administrator %PW_Administrator% /active:yes
 
         rem Create UserAccount Admin & Password & Add UserAccount Admin to localgroup Administrators
-        NET USER "Admin" /add
-        NET USER "Admin" %PW_Admin%
-        WMIC USERACCOUNT WHERE NAME="ADMIN" SET PasswordExpires=TRUE
+        NET USER Admin /add
+        NET USER Admin %PW_Admin%
+        WMIC UserAccount Where Name='Admin' Set PasswordExpires=TRUE
+        NET USER Admin /logonpasswordchg:yes
         NET LOCALGROUP Administrators Admin /add
 
         rem Schedule Disable Admin middle for employee
         SCHTASKS /CREATE /SC ONCE /ST 17:00 /TN "Disable-Admin" /TR "NET USER Admin /active:no" /RU ADMINISTRATOR /RP %PW_Administrator% /f
 
-        rem Open Website https://newcomers.rikkei.vn/ on Logon
-        REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v RikkeiNewComers /t REG_SZ /d "microsoft-edge:https://newcomers.rikkei.vn" /f
-        schtasks /CREATE /TN "RikkeiNewComers" /RU "administrator" /RP %PW_Administrator% /TR "REG DELETE HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v "RikkeiNewComers" /f" /SC ONCE /ST 15:00 /RL HIGHEST /f
+        rem Open Website * on Logon
+        REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v ChromeOpenWebsite /t REG_SZ /d "chrome.exe "%ChromeWebsite% /f
+        schtasks /CREATE /TN "Disable-ChromeOpenWebsite" /RU "administrator" /RP %PW_Administrator% /TR "REG DELETE HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v ChromeOpenWebsite /f" /SC ONCE /ST 15:00 /RL HIGHEST /f
+
+        rem Schedule shutdown computer after 10:00 PM
+        SCHTASKS /CREATE /SC ONCE /ST 22:00 /TN "Shutdown-Daily_10Min" /TR "shutdown.exe -s -t 600" /RU ADMINISTRATOR /RP %PW_Administrator% /f
 
         rem Date and Time Synchronization (UTC+07:00)
         tzutil /s "SE Asia Standard Time"
@@ -352,7 +361,6 @@ rem =============== Set Password Default ===============
             REG ADD %HKLM_S_Policies%"\Microsoft\Edge" /v DefaultPopupsSetting /t REG_DWORD /d 2 /f
 
             rem Computer Configuration\Policies\Administrative Templates\Microsoft Edge\SmartScreen settings
-
             rem (Microsoft Defender SmartScreen is turned on.)
             REG ADD %HKLM_S_Policies%"\Microsoft\Edge" /v SmartScreenEnabled /t REG_DWORD /d 1 /f
         echo "=============== END - MICROSOFT EDGE - ==============="
