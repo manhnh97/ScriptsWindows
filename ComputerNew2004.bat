@@ -27,7 +27,7 @@
             REM 9        <> [numberofDay]
 
     ::
-
+REM =============== Start - Run as Administrator File Current =============== `
 if _%1_==_payload_  goto :payload
 
 :getadmin
@@ -40,19 +40,67 @@ if _%1_==_payload_  goto :payload
 goto :eof
 
 :payload
-    ::ENTER YOUR CODE BELOW::   
-    Call :StartNow
+REM =============== End - Run as Administrator File Current =============== `
+    ::ENTER YOUR CODE BELOW::  
 
-    call :main %*
-    goto :eof
+REM =============== Start - Enter an input Password Administrator & Password Admin
+    setlocal enableextensions disabledelayedexpansion
+    rem Call the subroutine to get the password    
+        call :getPassword  password
+        set "PW_Administrator=%password%"
+        Set "PW_Users="
 
+        call :main %*
+    rem End of the process
+    endlocal
+    exit /b
+
+    rem Subroutine to get the password
+    :getPassword returnVar
+        setlocal enableextensions disabledelayedexpansion
+        set "_password="
+
+        rem We need a backspace to handle character removal
+        for /f %%a in ('"prompt;$H&for %%b in (0) do rem"') do set "BS=%%a"
+
+        rem Prompt the user 
+        set /p "=Enter an Input Password Administrator: " <nul 
+
+    :keyLoop
+        rem retrieve a keypress
+        set "key="
+        for /f "delims=" %%a in ('xcopy /l /w "%~f0" "%~f0" 2^>nul') do if not defined key set "key=%%a"
+        set "key=%key:~-1%"
+
+        rem handle the keypress 
+        rem     if No keypress (enter), then exit
+        rem     if backspace, remove character from password and console
+        rem     else add character to password and go ask for next one
+        if defined key (
+            if "%key%"=="%BS%" (
+                if defined _password (
+                    set "_password=%_password:~0,-1%"
+                    setlocal enabledelayedexpansion & set /p "=!BS! !BS!"<nul & endlocal
+                )
+            ) else (
+                set "_password=%_password%%key%"
+                set /p "=*"<nul
+            )
+            goto :keyLoop
+        )
+        echo(
+        rem return password to caller
+        if defined _password ( set "exitCode=0" ) else ( set "exitCode=1" )
+    endlocal & set "%~1=%_password%" & exit /b %exitCode
+REM =============== End - Enter an input Password Administrator & Password Admin
+
+    REM =============== Start - Run Code Here ===============
     :main
         setlocal
             set YYYY=%date:~10,4%
             set MM=%date:~4,2%
             set DD=%date:~7,2%
             call :initialize "%YYYY%-%MM%-%DD%" "1"
-
         endlocal
     goto :eof
 
@@ -89,16 +137,15 @@ goto :eof
             REM Change Name Computer
             WMIC COMPUTERSYSTEM WHERE caption='%ComputerName%' rename "%UserName%-%Department%"
             REM Create a New User and Password
-            NET Users "%UserName%" "%PWU%" /add /logonpasswordchg:yes
+            NET Users "%UserName%" "%PW_Users%" /add /logonpasswordchg:yes
             REM Add User to Localgroup "Remote Desktop Users"
             NET Localgroup "Remote Desktop Users" "%UserName%" /add
             REM Set Asset Code to Computer Description
             net config server /srvcomment:"CA %AssetCode%"
             REM Schedule Calendar Countdown DateTime Disable Admin User
-            schtasks /CHANGE /TN "disable-admin" /RU "administrator" /RP %PW% /SD %M%/%D%/%Y% /ENABLE /IT
-            REM Schedule DEL Website Rikkei
-            :: schtasks /CREATE /TN "RikkeiWebOneWeek" /RU "administrator" /RP %PW% /TR "REG DELETE HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v RikkeiWebOneWeek /f" /SC ONCE /ST 09:00 /SD %M%/%D%/%Y% /RL HIGHEST /f
-            schtasks /CHANGE /TN "RikkeiNewComers" /RU "administrator" /RP %PW% /SD %M%/%D%/%Y% /ENABLE /IT
+            schtasks /CHANGE /TN "Disable-Admin" /RU "administrator" /RP %PW_Administrator% /SD %M%/%D%/%Y% /ENABLE /IT
+            REM Schedule DEL Website *
+            schtasks /CHANGE /TN "Disable-ChromeOpenWebsite" /RU "administrator" /RP %PW_Administrator% /SD %M%/%D%/%Y% /ENABLE /IT
             
             REM Open disk management
             Start /wait "Disk Management" diskmgmt.msc
@@ -240,14 +287,4 @@ goto :eof
         )
         goto :eof
         
-    :StartNow
-        setlocal
-            REM Password Administrator using target Task Scheduler Name disable-admin [Run whether user is logged on or not]
-            set PW=
-            REM Password Default for New Users
-            set "PWU=Mothaiba"
-            
-            call :main %*
-        endlocal
-    goto :eof
     ::END OF YOUR CODE::
