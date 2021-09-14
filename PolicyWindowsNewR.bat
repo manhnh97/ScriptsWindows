@@ -8,6 +8,7 @@ REM =============== Can do it ===============
     REM + Set User Account Administrator gồm Password, Password Unlimited Date Time
     REM + Set User Account Admin gồm Password (Default Password: Input password in Variable => PW_Admin), add User Account Admin to Localgroup Administrators
     REM + Schedule Disable Admin middle for employee
+    REM + Schedule Shutdown PC at 10:00 PM
     REM + Open Website * on Logon
     REM + Date and Time Synchronization (UTC+07:00)
     REM + Lock Screen after 5 minutes
@@ -22,6 +23,7 @@ REM =============== Can do it ===============
 REM =============== Make it active ===============
     REM + Run as Administrator *PolicyWindowsNewR.bat* file 
 
+    REM + Enter UserAccount Password in variable PW_Admin
     REM + Enter an input Administrator Password 
     
 REM =============== End Tutorials ===============
@@ -121,7 +123,7 @@ rem =============== Set Password Default ===============
         schtasks /CREATE /TN "Disable-ChromeOpenWebsite" /RU "administrator" /RP %PW_Administrator% /TR "REG DELETE HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v ChromeOpenWebsite /f" /SC ONCE /ST 15:00 /RL HIGHEST /f
 
         rem Schedule shutdown computer after 10:00 PM
-        SCHTASKS /CREATE /SC ONCE /ST 22:00 /TN "Shutdown-Daily_10Min" /TR "shutdown.exe -s -t 600" /RU ADMINISTRATOR /RP %PW_Administrator% /f
+        SCHTASKS /CREATE /SC Daily /ST 22:00 /TN "Shutdown-Daily_10Min" /TR "shutdown.exe -s -t 600" /RU ADMINISTRATOR /RP %PW_Administrator% /f
 
         rem Date and Time Synchronization (UTC+07:00)
         tzutil /s "SE Asia Standard Time"
