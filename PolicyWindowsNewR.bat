@@ -316,7 +316,7 @@ rem =============== Set Password Default ===============
             rem Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options
 
             rem (Enforce cryptographic signatures on any interactive application that requests elevation of privilege)
-            REG ADD %HKLM_S_M_W_C_Policies%"\System" /v ValidateAdminCodeSignatures /t REG_DWORD /d 1 /f
+            REG ADD %HKLM_S_M_W_C_Policies%"\System" /v ValidateAdminCodeSignatures /t REG_DWORD /d 0  /f
 
             rem (This check verifies whether User Interface Accessibility programs can automatically disable the secure desktop for elevation prompts for a standard user)
             REG ADD %HKLM_S_M_W_C_Policies%"\System" /v EnableUIADesktopToggle /t REG_DWORD /d 0 /f
