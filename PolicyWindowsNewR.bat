@@ -206,9 +206,9 @@ rem =============== Set Password Default ===============
             net accounts /MINPWLEN:8
 
             rem Configure Password
-            net accounts /lockoutduration:3
-            net accounts /lockoutthreshold:3
-            net accounts /lockoutwindow:3
+            :: net accounts /lockoutduration:3
+            :: net accounts /lockoutthreshold:3
+            :: net accounts /lockoutwindow:3
 
             rem Notify Password Expiry
             REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v PasswordExpiryWarning /t REG_DWORD /d 14 /f
