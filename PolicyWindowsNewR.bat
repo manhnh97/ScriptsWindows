@@ -435,15 +435,15 @@ rem =============== Set Password Default ===============
             rem Logs Application
             REG ADD %HKLM_S_P_M_W_Logs%"\Application" /v MaxSize /t REG_DWORD /d 1024000 /f
             REG ADD %HKLM_S_P_M_W_Logs%"\Application" /v File /t REG_SZ /d "%SystemDrive%\Logs" /f
-            REG ADD %HKLM_S_P_M_W_Logs%"\Application" /v AutoBackupLogFiles /t REG_SZ /d 1 /f
+            
             rem Logs Security
             REG ADD %HKLM_S_P_M_W_Logs%"\Security" /v MaxSize /t REG_DWORD /d 1024000 /f
             REG ADD %HKLM_S_P_M_W_Logs%"\Security" /v File /t REG_SZ /d "%SystemDrive%\Logs" /f
-            REG ADD %HKLM_S_P_M_W_Logs%"\Security" /v AutoBackupLogFiles /t REG_SZ /d 1 /f
+
             rem Logs System
             REG ADD %HKLM_S_P_M_W_Logs%"\System" /v MaxSize /t REG_DWORD /d 1024000 /f
             REG ADD %HKLM_S_P_M_W_Logs%"\System" /v File /t REG_SZ /d "%SystemDrive%\Logs" /f
-            REG ADD %HKLM_S_P_M_W_Logs%"\System" /v AutoBackupLogFiles /t REG_SZ /d 1 /f
+
         echo "=============== END - AUDIT LOGS - ==============="
         echo .
     endlocal
