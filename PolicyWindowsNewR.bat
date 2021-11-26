@@ -87,7 +87,7 @@ rem =============== Set Password Default ===============
 :SetPassword
     setlocal
     REM =============== Input Password to Variable here ===============
-    set "PW_Admin="
+    set /p "PW_Admin=Enter a Password Admin: "
     REM =============== Variable here ===============
 
     REM Set link go to Website 
