@@ -200,10 +200,10 @@ rem =============== Set Password Default ===============
         echo .
         echo "=============== START - ACCOUNT & PASSWORD - ==============="
             rem Configure Account
-            net accounts /uniquepw:3
-            net accounts /MAXPWAGE:90
-            net accounts /MINPWAGE:0
-            net accounts /MINPWLEN:8
+            ::net accounts /uniquepw:3
+            ::net accounts /MAXPWAGE:90
+            ::net accounts /MINPWAGE:0
+            ::net accounts /MINPWLEN:8
 
             rem Configure Password
             :: net accounts /lockoutduration:3
